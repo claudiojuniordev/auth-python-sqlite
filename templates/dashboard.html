@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="card fade-in">
+        <div class="card-header">
+            <h3>Seu Perfil</h3>
+        </div>
+        <div>
+            <p><strong>Nome:</strong> {{ session.get('user_name') }}</p>
+            <p><strong>Login:</strong> {{ session.get('user_login') }}</p>
+            <p><strong>Membro desde:</strong> {{ session.get('created_at') }}</p>
+        </div>
+    </div>
+    
+    {% if session.get('is_admin') %}
+    <div class="card fade-in">
+        <div class="card-header">
+            <h3>Estatísticas</h3>
+        </div>
+        <div>
+            <p><strong>Total de Usuários:</strong> {{ total_users }}</p>
+            <p><strong>Usuários Ativos:</strong> {{ active_users }}</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% if session.get('is_admin') %}
+<div class="card fade-in">
+    <div class="card-header">
+        <h3>Lista de Usuários</h3>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Login</th>
+                <th>Criado em</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.login }}</td>
+                <td>{{ user.created_at }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_user_route', user_id=user.id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
+                            Excluir
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

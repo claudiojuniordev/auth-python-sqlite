@@ -61,3 +61,25 @@ def list_users(limit: int = 50):
     rows = cur.fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+def delete_user(identifier: str | int) -> bool:
+    """Exclui um usuário por id ou login.
+    
+    Args:
+        identifier: ID (int) ou login (str) do usuário
+    
+    Returns:
+        bool: True se um usuário foi excluído, False caso contrário
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+    
+    if isinstance(identifier, int) or (isinstance(identifier, str) and identifier.isdigit()):
+        cur.execute("DELETE FROM users WHERE id = ?", (int(identifier),))
+    else:
+        cur.execute("DELETE FROM users WHERE login = ?", (str(identifier),))
+    
+    deleted = cur.rowcount > 0
+    conn.commit()
+    conn.close()
+    return deleted
