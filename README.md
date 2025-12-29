@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 ### *Sistema de authenticação simples feita em Python*
 *Ferramentas utilizadas*
 - SQLite
 - .venv (ambiente virtual)
 - Biblioteca bcrypt
-=======
+
 # Sistema de Autenticação Python + SQLite
 
 Este projeto implementa um sistema de autenticação básico usando Python e SQLite, com duas interfaces disponíveis:
